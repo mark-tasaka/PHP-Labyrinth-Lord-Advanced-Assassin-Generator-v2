@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Advanced Labyrinth Lord Thief Character Generator Version 2</title>
+<title>Advanced Labyrinth Lord Assassin Character Generator Version 2</title>
  
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     
 	<meta charset="UTF-8">
-	<meta name="description" content="Labyrnith Lord Advance Companion Thief Character Generator..">
+	<meta name="description" content="Labyrnith Lord Advance Companion Assassin Character Generator..">
 	<meta name="keywords" content="Labyrnith Lord Advance Companion,,HTML5,CSS,JavaScript">
 	<meta name="author" content="Mark Tasaka 2022">
     
     <link rel="icon" href="../../../../images/favicon/icon.png" type="image/png" sizes="16x16"> 
 		
 
-	<link rel="stylesheet" type="text/css" href="css/thief.css">
+	<link rel="stylesheet" type="text/css" href="css/assassin.css">
     
     
     
@@ -40,6 +40,7 @@
     include 'php/demiHumans.php';
     include 'php/abilityAddition.php';
     include 'php/thiefSkills.php';
+    include 'php/assassinFees.php';
     
 
 
@@ -187,6 +188,7 @@
                 $strengthString = $_POST["theStrength"];
                 $strength = intval($strengthString);
                 $strength = demiHumanStrengthRange($strength, $species);
+                $strength = minAbilityScore($strength);
             }      
 
             if(isset($_POST["theDexterity"]))
@@ -194,6 +196,7 @@
                 $dexterityString = $_POST["theDexterity"];
                 $dexterity = intval($dexterityString);
                 $dexterity = demiHumanDexterityRange($dexterity, $species);
+                $dexterity = minAbilityScore($dexterity);
             }     
 
             if(isset($_POST["theConstitution"]))
@@ -208,6 +211,7 @@
                 $intelligenceString = $_POST["theIntelligence"];
                 $intelligence = intval($intelligenceString);
                 $intelligence = demiHumanIntelligenceRange($intelligence, $species);
+                $intelligence = minAbilityScore($intelligence);
             }  
 
             if(isset($_POST["theWisdom"]))
@@ -247,12 +251,15 @@
     
             $strength = $abilityScoreArray[0];
             $strength = demiHumanStrengthRange($strength, $species);
+            $strength = minAbilityScore($strength);
             $dexterity = $abilityScoreArray[1];
             $dexterity = demiHumanDexterityRange($dexterity, $species);
+            $dexterity = minAbilityScore($dexterity);
             $constitution = $abilityScoreArray[2];
             $constitution = demiHumanConstitutionRange($constitution, $species);
             $intelligence = $abilityScoreArray[3];
             $intelligence = demiHumanIntelligenceRange($intelligence, $species);
+            $intelligence = minAbilityScore($intelligence);
             $wisdom = $abilityScoreArray[4];
             $wisdom = demiHumanWisdomRange($wisdom, $species);
             $charisma = $abilityScoreArray[5];
@@ -290,11 +297,22 @@
         
         $armourACBonus = getArmour($armour)[1];
         $armourWeight = getArmour($armour)[2];
+        
+        if(isset($_POST['theCheckBoxShield']) && $_POST['theCheckBoxShield'] == 1) 
+        {
+            $shield = 1;
+        }
+        else
+        {
+            $shield = 0;
+        }
+        
+        $shieldName = getShield($shield)[0];
+        
+        $shieldACBonus = getShield($shield)[1];
+        $shieldWeight = getShield($shield)[2];
 
-       $totalAcDefense = $armourACBonus;
-
-
-       //$speed = 30;
+       $totalAcDefense = $armourACBonus + $shieldACBonus;
 
 
        $baseArmourClass = 9 - $dexterityMod;
@@ -305,13 +323,13 @@
        if(isset($_POST['theAdvancedHD']) && $_POST['theAdvancedHD'] == 1) 
        {
            $hitPoints = getAdvancedHitPoints($level, $constitutionMod);   
-           $hdMessage = "HD: d6 (Adv HD)";
+           $hdMessage = "HD: "  . $level . "d6 (Adv HD)";
        }
        else
        {
             //Hit Points
             $hitPoints = getHitPoints($level, $constitutionMod);
-            $hdMessage = "HD: d4";
+            $hdMessage = "HD: " . $level . "d4";
         }
        
 
@@ -475,11 +493,10 @@
         $saveSpells -= $wisdomMod;
         $saveSpells -= $saveSpellsMod;
 
-        $primeReq = primeReq($dexterity);
         $resSurvival = survivalResurrection($constitution);
         $shockSurvival = survivalShock($constitution);
         $demiHumanTraits = demiHumanTraits($species);
-        $thiefMessage = thiefMessage($level);
+        $assassinMessage = assassinAbility($level);
 
         $strengthDescription = strengthModifierDescription($strength);
         $dexterityDescription = dexterityModifierDescription($dexterity);
@@ -530,33 +547,57 @@
         $missileHitAC9 = $missileHitAC0  - 9;
         $missileHitAC9 = getThacoCheck($missileHitAC9);
         
-        $pickLock = getPickLocks($level);
-        $pickLockAdjust =  adjustPickLocks($species);
-        $pickLock -= $pickLockAdjust;
+        $levelAdjust = ($level - 2);
 
-        $findTrap = getFindTrap($level);
-        $findTrapAdjust = adjustFindRemoveTraps($species);
-        $findTrap -= $findTrapAdjust;
+        if($levelAdjust < 1)
+        {
+            $assassinThiefSkills = "";
+        }
+        else
+        {
+            
+            $pickLock = getPickLocks($levelAdjust);
+            $pickLockAdjust =  adjustPickLocks($species);
+            $pickLock -= $pickLockAdjust;
 
-        $pickPockets = getPickPockets($level);
-        $pickPocketsAdjust = adjustPickPockets($species);
-        $pickPockets -= $pickPocketsAdjust;
+            $findTrap = getFindTrap($levelAdjust);
+            $findTrapAdjust = adjustFindRemoveTraps($species);
+            $findTrap -= $findTrapAdjust;
+
+            $pickPockets = getPickPockets($levelAdjust);
+            $pickPocketsAdjust = adjustPickPockets($species);
+            $pickPockets -= $pickPocketsAdjust;
 
 
-        $moveSilently = getMoveSilently($level);
-        $moveSilentlyAjust = adjustMoveSilently($species);
-        $moveSilently -= $moveSilentlyAjust;
+            $moveSilently = getMoveSilently($levelAdjust);
+            $moveSilentlyAjust = adjustMoveSilently($species);
+            $moveSilently -= $moveSilentlyAjust;
 
-        $climbWall = getClimbWall($level);
-        $climbWallAdjust = adjustClimbWalls($species);
-        $climbWall -= $climbWallAdjust;
+            $climbWall = getClimbWall($levelAdjust);
+            $climbWallAdjust = adjustClimbWalls($species);
+            $climbWall -= $climbWallAdjust;
 
-        $hideShadow = getHideShadows($level);
-        $hideShadowAdjust = adjustHideShadow($species);
-        $hideShadow -= $hideShadowAdjust;
+            $hideShadow = getHideShadows($levelAdjust);
+            $hideShadowAdjust = adjustHideShadow($species);
+            $hideShadow -= $hideShadowAdjust;
 
-        $hearNoise = getHearNoise($level, $species);
-    
+            $hearNoise = getHearNoise($levelAdjust, $species);
+
+            $assassinThiefSkills = "Thief Skills: Pick locks " . $pickLock . "%; find traps " . $findTrap . "%; pick pockets " . $pickPockets . "%; move sliently " . $moveSilently . "%; climb walls " . $climbWall . "%; hide in shadows " . $hideShadow . "%; hear noises " . $hearNoise . "<br/>";
+        }
+
+            
+        $baseFee = assassinFeeBase ($level);
+        $Fee1HD = assassinFeeHd1 ($level);
+        $Fee3HD = assassinFeeHd3 ($level);
+        $Fee5HD = assassinFeeHd5 ($level);
+        $Fee7HD = assassinFeeHd7 ($level);
+        $Fee10HD = assassinFeeHd10 ($level);
+        $Fee13HD = assassinFeeHd13 ($level);
+        $Fee16HD = assassinFeeHd16 ($level);
+        
+
+
     
     ?>
 
@@ -813,7 +854,7 @@
        
        
        
-       <span id="class">Thief</span>
+       <span id="class">Assassin</span>
        
        <span id="armourClass">
            <?php
@@ -929,6 +970,39 @@
                 echo $armourWeight;
             ?>
         </span>
+
+        
+                      
+       <span id="shieldName">
+           <?php
+
+           if($shield === 1)
+           {
+                echo $shieldName;
+           }
+           ?>
+        </span>
+              
+       <span id="shieldACBonus">
+           <?php
+           if($shield === 1)
+           {
+                echo $shieldACBonus;
+           }
+           ?>
+        </span>
+              
+       <span id="shieldWeight">
+           <?php
+           
+           if($shield === 1)
+           {
+                echo $shieldWeight;
+           }
+           ?>
+        </span>
+        
+
 
         <span id="weaponsList">
            <?php
@@ -1107,58 +1181,63 @@
         
         <span id="classAbilities">
             <?php
-                echo $primeReq;
-                echo "Backstab: +4 attack bonus; x2 damage.";
                 echo "Survive Resurrection " . $resSurvival . "%; Survive Transformative Shock " . $shockSurvival . "%<br/>"; 
-                echo $thiefMessage;
+                echo $assassinMessage;
+                echo $assassinThiefSkills;
                 echo $demiHumanTraits;
             ?>
         </span>
 
         
-        <span id="pickLock">
-            <?php
-                echo $pickLock . "%";
-            ?>
-        </span>
+       <span id="baseFee">
+           <?php
+           echo $baseFee;
+           ?>
+       </span>
+       
+       <span id="hd1Fee">
+           <?php
+           echo $Fee1HD;
+           ?>
+       </span>
+       
+              
+       <span id="hd3Fee">
+           <?php
+           echo $Fee3HD;
+           ?>
+       </span>
+              
+       <span id="hd5Fee">
+           <?php
+           echo $Fee5HD;
+           ?>
+       </span>
+              
+       <span id="hd7Fee">
+           <?php
+           echo $Fee7HD;
+           ?>
+       </span>
+              
+       <span id="hd10Fee">
+           <?php
+           echo $Fee10HD;
+           ?>
+       </span>
+              
+       <span id="hd13Fee">
+           <?php
+           echo $Fee13HD;
+           ?>
+       </span>
+              
+       <span id="hd16Fee">
+           <?php
+           echo $Fee16HD;
+           ?>
+       </span>
 
-        
-        <span id="findTrap">
-            <?php
-                echo $findTrap . "%";
-            ?>
-        </span>
-        
-        
-        <span id="pickPockets">
-            <?php
-                echo $pickPockets . "%";
-            ?>
-        </span>
-        
-        <span id="moveSilently">
-            <?php
-                echo $moveSilently . "%";
-            ?>
-        </span>
-        
-        <span id="climbWall">
-            <?php
-                echo $climbWall . "%";
-            ?>
-        </span>
-        
-        <span id="hideShadow">
-            <?php
-                echo $hideShadow . "%";
-            ?>
-        </span>
-        
-        <span id="hearNoise">
-            <?php
-                echo $hearNoise;
-            ?>
-        </span>
 
         
        
@@ -1172,7 +1251,7 @@
       
 
   
-       let imgData = "images/thief.png";
+       let imgData = "images/assassin.png";
       
         $("#character_sheet").attr("src", imgData);
       

@@ -299,10 +299,10 @@ body{
 
 #abilityScoreGeneration{
     position:absolute;
-    top: 1160px;
+    top: 1163px;
     left: 35px;
     font-size: 0.5em;
-    width: 380px;
+    width: 465px;
 }
 
 
@@ -623,10 +623,10 @@ body{
 
 #classAbilities{
     position:absolute;
-    top: 950px;
+    top: 925px;
     left: 35px;
-	font-size: 0.6em;
-    width: 395px;
+	font-size: 0.55em;
+    width: 450px;
 }
 
 
@@ -874,4 +874,60 @@ body{
     top: 1158px;
     left: 585px;
     font-size: 0.8em;
+}
+
+#baseFee{
+    position:absolute;
+    top: 967px;
+    left: 560px;
+    font-size: 0.7em;
+}
+
+#hd1Fee{
+    position:absolute;
+    top: 995px;
+    left: 560px;
+    font-size: 0.7em;
+}
+
+#hd3Fee{
+    position:absolute;
+    top: 1023px;
+    left: 560px;
+    font-size: 0.7em;
+}
+
+#hd5Fee{
+    position:absolute;
+    top: 1050px;
+    left: 560px;
+    font-size: 0.7em;
+}
+
+#hd7Fee{
+    position:absolute;
+    top: 1078px;
+    left: 560px;
+    font-size: 0.7em;
+}
+
+#hd10Fee{
+    position:absolute;
+    top: 1106px;
+    left: 560px;
+    font-size: 0.7em;
+}
+
+#hd13Fee{
+    position:absolute;
+    top: 1134px;
+    left: 560px;
+    font-size: 0.7em;
+}
+
+#hd16Fee{
+    position:absolute;
+    top: 1162px;
+    left: 560px;
+    font-size: 0.7em;
 }

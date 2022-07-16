@@ -1,49 +1,24 @@
 <?php
 
-/*Thief */
+/*Assssin */
 
 function getHitPoints($level, $conMod)
 {
     $hitPoints = 0;
+    
+    for($i = 0; $i < $level; ++$i)
+    {
+        $levelHP = rand(1, 4);
+        $levelHP += $conMod;
 
-    if($level < 10)
-    {
-        for($i = 0; $i < $level; ++$i)
+        if($levelHP < 2)
         {
-            $levelHP = rand(1, 4);
-            $levelHP += $conMod;
-    
-            if($levelHP < 2)
-            {
-                $levelHP = 2;
-            }
-    
-            $hitPoints += $levelHP;
-    
-        }
-    }
-    else
-    {
-        for($i = 0; $i < 10; ++$i)
-        {
-            $levelHP = rand(1, 4);
-            $levelHP += $conMod;
-    
-            if($levelHP < 2)
-            {
-                $levelHP = 2;
-            }
-    
-            $hitPoints += $levelHP;
-    
+            $levelHP = 2;
         }
 
-        $levelTenPlusHP = ($level - 9) * 2;
-
-        $hitPoints += $levelTenPlusHP;
+        $hitPoints += $levelHP;
 
     }
-
 
     return $hitPoints;
 
@@ -53,44 +28,19 @@ function getAdvancedHitPoints($level, $conMod)
 {
     $hitPoints = 0;
 
-    if($level < 10)
+    for($i = 0; $i < $level; ++$i)
     {
-        for($i = 0; $i < $level; ++$i)
+        $levelHP = rand(3, 6);
+        $levelHP += $conMod;
+
+        if($levelHP < 3)
         {
-            $levelHP = rand(3, 6);
-            $levelHP += $conMod;
-    
-            if($levelHP < 3)
-            {
-                $levelHP = 3;
-            }
-    
-            $hitPoints += $levelHP;
-    
-        }
-    }
-    else
-    {
-        for($i = 0; $i < 10; ++$i)
-        {
-            $levelHP = rand(3, 6);
-            $levelHP += $conMod;
-    
-            if($levelHP < 3)
-            {
-                $levelHP = 3;
-            }
-    
-            $hitPoints += $levelHP;
-    
+            $levelHP = 3;
         }
 
-        $levelTenPlusHP = ($level - 9) * 2;
-
-        $hitPoints += $levelTenPlusHP;
+        $hitPoints += $levelHP;
 
     }
-
 
     return $hitPoints;
 
@@ -620,5 +570,74 @@ function startingAge($species)
 
 }
 
+
+function assassinAbility($level)
+{
+    $message = "";
+    
+    if($level <= 2)
+    {
+        $message = "*Backstab: +4 bonus to hit; x2 damage.<br/>
+        *Ability to use disguises and poisons.<br/>
+        *Assassination (instant kill): Must successfully backstab and achieve surprise
+        on the victim; base probability of 50% against a victim of equal level/HD
+        (probability modified by 5% for each level/HD above or below assassin's level).<br/>";
+    }
+    else if($level == 3)
+    {
+        $message = "*Backstab: +4 bonus to hit; x2 damage.<br/>
+        *Ability to use disguises and poisons.<br/>
+        *Assassination (instant kill): Must successfully backstab and achieve surprise
+        on the victim; base probability of 50% against a victim of equal level/HD
+        (probability modified by 5% for each level/HD above or below assassin's level).<br/>
+        *Gain thief skills at two levels lower.<br/>";
+    }
+    else if($level >= 4 && $level <= 7)
+    {
+        $message = "*Backstab: +4 bonus to hit; x2 damage.<br/>
+        *Ability to use disguises and poisons.<br/>
+        *Assassination (instant kill): Must successfully backstab and achieve surprise
+        on the victim; base probability of 50% against a victim of equal level/HD
+        (probability modified by 5% for each level/HD above or below assassin's level).<br/>
+        *Gain thief skills at two levels lower.<br/>
+        *May have hirelings (must be assassin of equal or lower levels).<br/>";
+    }
+    else if($level >= 8 && $level <= 11)
+    {
+        $message = "*Backstab: +4 bonus to hit; x2 damage.<br/>
+        *Ability to use disguises and poisons.<br/>
+        *Assassination (instant kill): Must successfully backstab and achieve surprise
+        on the victim; base probability of 50% against a victim of equal level/HD
+        (probability modified by 5% for each level/HD above or below assassin's level).<br/>
+        *Gain thief skills at two levels lower.<br/>
+        *May have hirelings (thief or assassin class only).<br/>";
+    }
+    else if($level > 11)
+    {
+        $message = "*Backstab: +4 bonus to hit; x2 damage.<br/>
+        *Ability to use disguises and poisons.<br/>
+        *Assassination (instant kill): Must successfully backstab and achieve surprise
+        on the victim; base probability of 50% against a victim of equal level/HD
+        (probability modified by 5% for each level/HD above or below assassin's level).<br/>
+        *Gain thief skills at two levels lower.<br/>
+        *May have hirelings (any class).<br/>";
+    }
+    
+    return $message;
+    
+}
+
+//Strength, Dexterity & Intelligence
+function minAbilityScore($abilityScore)
+{
+    if($abilityScore < 12)
+    {
+        return 12;
+    }
+    else
+    {
+        return $abilityScore;
+    }
+}
 
 ?>

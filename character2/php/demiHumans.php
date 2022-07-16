@@ -117,35 +117,35 @@ function levelLimit ($race, $level)
     
     if($race === "Dwarf")
     {
-        if($level <= 12)
+        if($level <= 9)
         {
             $characterLevel = $level;
         }
         else
         {
-            $characterLevel = 12;
+            $characterLevel = 10;
         }
     }
     else if($race === "Elf")
     {
-        if($level <= 12)
+        if($level <= 10)
         {
             $characterLevel = $level;
         }
         else
         {
-            $characterLevel = 12;
+            $characterLevel = 10;
         }
     }
     else if($race === "Gnome")
     {
-        if($level <= 12)
+        if($level <= 8)
         {
             $characterLevel = $level;
         }
         else
         {
-            $characterLevel = 12;
+            $characterLevel = 8;
         }
     }
     else if($race === "Halfling")
@@ -161,24 +161,24 @@ function levelLimit ($race, $level)
     }
     else if($race === "Half-Elf")
     {
-        if($level <= 12)
+        if($level <= 11)
         {
             $characterLevel = $level;
         }
         else
         {
-            $characterLevel = 12;
+            $characterLevel = 11;
         }
     }
     else if($race === "Half-Orc")
     {
-        if($level <= 12)
+        if($level <= 15)
         {
             $characterLevel = $level;
         }
         else
         {
-            $characterLevel = 12;
+            $characterLevel = 15;
         }
     }
     else
