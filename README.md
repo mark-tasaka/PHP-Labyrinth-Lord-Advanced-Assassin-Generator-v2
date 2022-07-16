@@ -3,6 +3,17 @@ The Labyrinth Lord Advanced Companion Assassin Character Generator Version 2 is 
 
 ---------
 
+A link to the live version of the Labyrinth Lord Advanced Companion Assassin Character Generator Version 2 is available at:
+
+https://www.oldschooladventures.org/ll/classes2/assassin/
+
+---------------
+
+Update 1.01: 2022-07-16
+
+Updates to assassin.php, assassin.css, assassin.png, assassinFees.php, classDetails.php, demiHumans.php, and xp.php.  A link to the live version of the Labyrinth Lord Advanced Companion Assassin Character Generator Version 2 has been added.
+
+
 Initial commit: 2022-07-13
 
 The initial commit for the Labyrinth Lord Advanced Companion Assassin Character Generator Version 2.
